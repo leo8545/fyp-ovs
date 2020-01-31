@@ -1,0 +1,8 @@
+{
+	"db": {
+		"host": "localhost",
+		"user": "root",
+		"password": "",
+		"dbname": "fyp-ovs-001"
+	}
+}

@@ -1,0 +1,17 @@
+{
+	"/": {
+		"controller": "Home",
+		"method": "get_home"
+	},
+	"/vehicle/:id": {
+		"controller": "Vehicle",
+		"method": "get_vehicle",
+		"params": {
+			"id": "number"
+		}
+	},
+	"/dashboard/vehicle/add": {
+		"controller": "Vehicle",
+		"method": "add_vehicle"
+	}
+}
