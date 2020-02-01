@@ -2,6 +2,14 @@
 
 namespace OVS\Domain;
 
+/**
+ * Base class for all users
+ * 
+ * @package OVS
+ * @author Sharjeel Ahmad
+ * @version 1.0.0
+ * @access public
+ */
 class User {
 
 	private $id;

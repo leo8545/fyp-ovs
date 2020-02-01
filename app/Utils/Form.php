@@ -17,14 +17,26 @@ class Form {
 		return "<label for=\"$for\">$label</label>";
 	}
 
-	static public function text(string $name, string $value = "", ?array $attributes = []) {
+	static public function input( string $type, string $name, string $value = "", ?array $attributes = [], bool $checked = false ) {
 		$attr_html = Form::get_attributes_html($attributes);
-		return "<input type=\"text\" name=$name id=$name value=$value $attr_html />";
+		$result = "<input type=\"$type\" name=\"$name\" id=\"$name\" value=\"$value\" $attr_html ";
+		if( $type === "radio" ) {
+			$result .= isset($checked) && $checked ? " checked=\"checked\"" : "";
+		}
+		$result .= " />";
+		return $result;
 	}
 
-	static public function radio(string $name, string $value, bool $checked = false) {
-		$check_html = isset($checked) && $checked ? " checked=\"checked\"" : "";
-		return "<input type=\"radio\" name=$name id=$value value=$value $check_html />";
+	static public function text(string $name, string $value = "", ?array $attributes = []) {
+		return self::input("text", $name, $value, $attributes);
+	}
+
+	static public function password(string $name, string $value = "", ?array $attributes = []) {
+		return self::input("password", $name, $value, $attributes);
+	}
+
+	static public function radio(string $name, string $value = "", ?array $attributes = [], bool $checked = false) {
+		return self::input("radio", $name, $value, $attributes, $checked);
 	} 
 
 	static public function group(array $meta) {
@@ -40,12 +52,18 @@ class Form {
 			$field_type = isset($meta["field"]["type"]) ? $meta["field"]["type"] : "";
 			$field_name = isset($meta["field"]["name"]) ? $meta["field"]["name"] : "";
 			$field_value = isset($meta["field"]["value"]) ? $meta["field"]["value"] : "";
+			$field_checked = isset($meta["field"]["checked"]) ? $meta["field"]["checked"] : "";
 			$attributes = isset($meta["field"]["attributes"]) ? $meta["field"]["attributes"] : [];
 
-			$res .= self::label($label_for, $label_text);
 			switch($field_type) {
 				case "text":
-					$res .= self::text($field_name, $field_value, $attributes);
+				case "password":
+					$res .= self::label($label_for, $label_text);
+					$res .= self::$field_type($field_name, $field_value, $attributes);
+				break;
+				case "radio":
+					$res .= self::radio($field_name, $field_value, $attributes, $field_checked);
+					$res .= self::label($label_for, $label_text);
 				break;
 			}
 			$res .= "</div>";
@@ -54,7 +72,7 @@ class Form {
 		return $res;
 	}
 
-	static public function submit(string $text = "Submit", ?array $attributes = []) {
+	static public function button(string $text = "Submit", ?array $attributes = []) {
 		$attr_html = Form::get_attributes_html($attributes);
 		return "<button $attr_html>$text</button>";
 	}

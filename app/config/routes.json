@@ -3,6 +3,10 @@
 		"controller": "Home",
 		"method": "get_home"
 	},
+	"/register": {
+		"controller": "User",
+		"method": "register"
+	},
 	"/vehicle/:id": {
 		"controller": "Vehicle",
 		"method": "get_vehicle",
@@ -11,7 +15,8 @@
 		}
 	},
 	"/dashboard/vehicle/add": {
-		"controller": "Vehicle",
-		"method": "add_vehicle"
+		"controller": "Admin",
+		"method": "add_vehicle",
+		"access": "admin"
 	}
 }

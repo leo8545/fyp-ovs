@@ -4,5 +4,15 @@
 		"user": "root",
 		"password": "",
 		"dbname": "fyp-ovs-001"
+	},
+	"Twig_Functions": {
+		"Form_open": "\\OVS\\Utils\\Form::open",
+		"Form_close": "\\OVS\\Utils\\Form::close",
+		"Form_text": "\\OVS\\Utils\\Form::text",
+		"Form_password": "\\OVS\\Utils\\Form::password",
+		"Form_radio": "\\OVS\\Utils\\Form::radio",
+		"Form_label": "\\OVS\\Utils\\Form::label",
+		"Form_group": "\\OVS\\Utils\\Form::group",
+		"Form_button": "\\OVS\\Utils\\Form::button"
 	}
 }
