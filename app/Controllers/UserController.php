@@ -5,6 +5,7 @@ namespace OVS\Controllers;
 use Exception;
 use OVS\Core\Request;
 use OVS\Core\Router;
+use OVS\Domain\Admin;
 use OVS\Domain\Customer;
 use OVS\Domain\User;
 use OVS\Models\UserModel;
@@ -12,8 +13,10 @@ use OVS\Utils\Session;
 use OVS\Utils\Validate;
 
 class UserController extends AbstractController {
+
 	public function register() {
 		$request = new Request();
+		$path = $request->get_path();
 		$post_obj = isset($_POST) ? $_POST : "";
 		$errors = [];
 		if($post_obj) {
@@ -23,8 +26,9 @@ class UserController extends AbstractController {
 				$errors = $validate->get_errors();
 			} else {
 				// Add user to db
-				if( $request->get_path() === "/register" ) {
+				if( $path === "/register" ) {
 					$user = new Customer($post_obj["username"], $post_obj["email"], $post_obj["password"]);
+					// $user = new Admin($post_obj["username"], $post_obj["email"], $post_obj["password"]);
 				}
 				try {
 					$user_model->create_user($user);
@@ -36,7 +40,7 @@ class UserController extends AbstractController {
 				}
 			}
 		}
-		$props = ["path" => $request->get_path(), "post_obj" => $post_obj, "errors" => $errors];
+		$props = ["path" => $path, "post_obj" => $post_obj, "errors" => $errors];
 		return $this->render("register.user.twig", $props);
 	}
 
@@ -50,12 +54,20 @@ class UserController extends AbstractController {
 				$username = (string) $post_obj["username"];
 				$password = (string) $post_obj["password"];
 				$user_model = new UserModel($this->db);
-				$user = $user_model->get_user_by("username", $username);
-				if( $user["username"] === $username && password_verify($password, $user["password"]) ) {
-					Session::set("logged_in", "yes");
-					Session::set("logged_in_as", $user["role"]);
-					Session::set("logged_in_username", $user["username"]);
-					Router::redirect("customer/dashboard");
+				try {
+					$user = $user_model->get_user_by("username", $username);
+					if( $user["username"] === $username && password_verify($password, $user["password"]) ) {
+						Session::set("logged_in", "yes");
+						Session::set("logged_in_as", $user["role"]);
+						Session::set("logged_in_username", $user["username"]);
+						if($user["role"] === "admin") {
+							Router::redirect("admin/dashboard");
+						} else if ($user["role"] === "customer") {
+							Router::redirect("customer/dashboard");
+						}
+					}
+				} catch( Exception $ex ) {
+					$errors["notFound"][] = "Wrong username or password !";
 				}
 			}
 		} else {

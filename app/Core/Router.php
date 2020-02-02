@@ -76,11 +76,10 @@ class Router {
 	public function route( Request $request ) {
 		
 		$path = $request->get_path();
-		echo $path . "<br>";
 		
 		foreach( $this->route_map as $route => $info ) {
 			$regex_route = $this->get_regex_route( $route, $info );
-			echo $regex_route . "<br>";
+
 			if( preg_match( "@^$regex_route$@", $path ) ) {
 				return $this->execute_controller( $route, $path, $info, $request );
 			}

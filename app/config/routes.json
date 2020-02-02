@@ -15,6 +15,21 @@
 		"controller": "User",
 		"method": "logout"
 	},
+	"/admin/dashboard": {
+		"controller": "Admin",
+		"method": "panel"
+	},
+	"/admin/settings": {
+		"controller": "Admin",
+		"method": "settings"
+	},
+	"/admin/settings/:opt": {
+		"controller": "Admin",
+		"method": "settings",
+		"params": {
+			"opt": "string"
+		}
+	},
 	"/customer/dashboard": {
 		"controller": "User",
 		"method": "go_to_dashboard"

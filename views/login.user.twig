@@ -1,42 +1,44 @@
 {% extends "layout.twig" %}
 
-{% block title %}Login{% endblock %}
+{% block title %}Login
+{% endblock %}
 
 {% block content %}
-<h1>Login:</h1>
+	<h1>Login:</h1>
 
-{% if errors is not empty %}
+	{% if errors is not empty %}
 
-<div class="info-box">
-	<ul>
-		{% for error in errors %}
-			{% for err in error %}
-				{% if err != 1 %}
-					<li>{{err|raw}}</li>
-				{% endif %}
-			{% endfor %}
-		{% endfor %}
-	</ul>
-</div>
+		<div class="info-box">
+			<ul>
+				{% for error in errors %}
+					{% for err in error %}
+						{% if err != 1 %}
+							<li>{{err|raw}}</li>
+						{% endif %}
+					{% endfor %}
+				{% endfor %}
+			</ul>
+		</div>
 
-{% endif %}
+	{% endif %}
 
-{{Form_open(path)}}
+	{{Form_open(path)}}
 
-{{
+	{{
 	Form_group({
 		"label": {"for": "username", "text": "Username"},
 		"field": {"type": "text", "name": "username", "value": post_obj.username}
 	})
 }}
-{{ 	
+	{{ 	
 	Form_group({
 		"label": {"for": "password", "text": "Password"},
 		"field": {"type": "password", "name": "password", "value": post_obj.password}
 	})
 }}
-{{Form_button()}}
 
-{{Form_close()}}
+	{{Form_button("Login")}}
+
+	{{Form_close()}}
 
 {% endblock %}

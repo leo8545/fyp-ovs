@@ -4,6 +4,7 @@ namespace OVS\Models;
 
 use OVS\Domain\User;
 use OVS\Exceptions\DBException;
+use OVS\Exceptions\NotFoundException;
 
 class UserModel extends AbstractModel {
 
@@ -31,6 +32,8 @@ class UserModel extends AbstractModel {
 			throw new DBException("Error executing database query while loggin in");
 		}
 		$user = $stmt->fetchAll($this->db::FETCH_ASSOC);
+		if(!$user)
+			throw new NotFoundException("User does not exists");
 		return $user[0];
 	}
 

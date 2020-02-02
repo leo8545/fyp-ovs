@@ -33,6 +33,8 @@ try {
 
 $loader = new \Twig\Loader\FilesystemLoader(__DIR__ . "/views");
 $twig = new \Twig\Environment($loader);
+$twig->addGlobal("siteTitle", "Online Vehicle Showroom");
+$twig->addGlobal("siteShortTitle", "OVS");
 $twig->addGlobal("session", Session::all());
 
 $twig_functions = $config->get("Twig_Functions");
