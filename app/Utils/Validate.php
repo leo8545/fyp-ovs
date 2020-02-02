@@ -43,12 +43,15 @@ class Validate {
 	 */
 	private $errors = [];
 
+	static private $model;
+
 	/**
 	 * Takes associative array of field name as key and rules as values and executes the corresponding validation method
 	 *
 	 * @param array $meta	name => rules
 	 */
-	public function __construct( array $meta ) {
+	public function __construct( array $meta, $model ) {
+		self::$model = $model;
 		foreach( $meta as $field => $rules ) {
 			$this->field_name = $field;
 			$this->field = (string) $_POST[$field];
@@ -61,9 +64,9 @@ class Validate {
 	 * Convert rules in string format to associative array
 	 *
 	 * @return array Associative array rule_name as key, rule_value as value
-	 * @access private
+	 * @access protected
 	 */
-	private function extract_rules() {
+	protected function extract_rules() {
 		$rules_arr = explode("|", $this->rules);
 		$rules = [];
 
@@ -89,16 +92,40 @@ class Validate {
 		foreach( $rules as $rule => $value ) {
 			switch( $rule ) {
 				case "max":
-					$this->errors[$this->field_name]["max"] = $this->validate_max($value);
+					$this->set_errors( "max", $this->validate_max($value) );
 				break;
 				case "min":
-					$this->errors[$this->field_name]["min"] = $this->validate_min($value);
+					$this->set_errors( "min", $this->validate_min($value) );
 				break;
 				case "required":
-					$this->errors[$this->field_name]["required"] = $this->validate_required();
+					$this->set_errors( "required", $this->validate_required() );
+				break;
+				case "email":
+					$this->set_errors("email", $this->validate_email());
+				break;
+				case "unique":
+					$this->set_errors("unique", $this->validate_uniqueness());
 				break;
 			}
 		}
+	}
+
+	/**
+	 * Checks if user is unique
+	 *
+	 * @return integer|string	1 if unique, error message otherwise
+	 * @access private
+	 */
+	private function validate_uniqueness() {
+		// $user_model = new UserModel($this->db);
+
+		$is_unique = 0;
+		try {
+			$is_unique = self::$model->is_unique_field($this->get_field_name(), $this->get_field());
+		} catch( \Exception $ex ) {
+			return $ex->getMessage();
+		}
+		return $is_unique !== 0 ? 1 : ucfirst($this->get_field_name()) . " already exists.";
 	}
 
 	/**
@@ -140,6 +167,28 @@ class Validate {
 	}
 
 	/**
+	 * Validate email
+	 * 
+	 * @return integer|string 1 if true, error message if false
+	 * @access private
+	 */
+	private function validate_email() {
+		return filter_var( $this->field, FILTER_VALIDATE_EMAIL ) ? 1 : "Invalid email!";
+	}
+
+	public function get_field_name() : string {
+		return $this->field_name;
+	}
+
+	public function get_field() : string {
+		return $this->field;
+	}
+
+	public function get_rules() : string {
+		return $this->rules;
+	}
+
+	/**
 	 * Gets errors
 	 *
 	 * @return array	e.g. [field] => [ [required] => 1 ]
@@ -147,6 +196,10 @@ class Validate {
 	 */
 	public function get_errors() : array {
 		return $this->errors;
+	}
+
+	public function set_errors($index, $msg) {
+		$this->errors[$this->field_name][$index] = $msg;
 	}
 
 	/**

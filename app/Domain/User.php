@@ -21,7 +21,7 @@ class User {
 	public function __construct( string $name, string $email, string $password, string $role ) {
 		$this->name = $name;
 		$this->email = $email;
-		$this->password = $password;
+		$this->set_password($password);
 		$this->role = $role;
 	}
 
@@ -54,7 +54,7 @@ class User {
 	}
 
 	public function set_password( string $password ) {
-		$this->password = $password;
+		$this->password = password_hash($password, CRYPT_BLOWFISH);
 	}
 	
 	public function get_role() : string {

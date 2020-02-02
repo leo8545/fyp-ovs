@@ -1,5 +1,5 @@
 <header>
-	<nav>
+	<nav class="nav-left">
 		<ul>
 			<li>
 				<a href="/">Home</a>
@@ -10,7 +10,9 @@
 		</ul>
 	</nav>
 	<div class="logo">
-		<img src="/../../../public/assets/images/logo.png" alt="Online Vehicle Showroom">
+		<a href="/">
+			<img src="/../../../public/assets/images/logo.png" alt="Online Vehicle Showroom">
+		</a>
 	</div>
 	<nav class="nav-right">
 		<ul>
@@ -18,7 +20,11 @@
 				<a href="/register">Register</a>
 			</li>
 			<li>
-				<a href="#">Log in</a>
+				{% if session.logged_in %}
+				<a href="/logout">Log out</a>
+				{% else %}
+				<a href="/login">Log in</a>
+				{% endif %}
 			</li>
 		</ul>
 	</nav>

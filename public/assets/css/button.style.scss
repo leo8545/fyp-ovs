@@ -1,0 +1,45 @@
+/* GENERAL BUTTON STYLING */
+button,
+button::after {
+	-webkit-transition: all 0.3s;
+	-moz-transition: all 0.3s;
+	-o-transition: all 0.3s;
+	transition: all 0.3s;
+}
+
+button {
+	background: transparent;
+	border: 3px solid #ddd;
+	border-radius: 5px;
+	color: #000;
+	display: block;
+	// font-size: 1.6em;
+	font-weight: bold;
+	// margin: 1em auto;
+	padding: 6px 20px;
+	position: relative;
+	text-transform: uppercase;
+}
+
+button::before,
+button::after {
+	background: #000;
+	content: "";
+	position: absolute;
+	z-index: -1;
+}
+
+button:hover {
+	color: #fff;
+}
+/* BUTTON 1 */
+button::after {
+	height: 0;
+	left: 0;
+	top: 0;
+	width: 100%;
+}
+
+button:hover:after {
+	height: 100%;
+}

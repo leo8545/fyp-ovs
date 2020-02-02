@@ -7,6 +7,18 @@
 		"controller": "User",
 		"method": "register"
 	},
+	"/login": {
+		"controller": "User",
+		"method": "login"
+	},
+	"/logout": {
+		"controller": "User",
+		"method": "logout"
+	},
+	"/customer/dashboard": {
+		"controller": "User",
+		"method": "go_to_dashboard"
+	},
 	"/vehicle/:id": {
 		"controller": "Vehicle",
 		"method": "get_vehicle",

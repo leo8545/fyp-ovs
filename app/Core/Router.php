@@ -56,6 +56,17 @@ class Router {
 	}
 
 	/**
+	 * Redirect
+	 * 
+	 * @param string $to Path to redirect to, without slash
+	 * @access public
+	 */
+
+	static public function redirect(string $to) {
+		header("location: /$to");
+	}
+
+	/**
 	 * Matches route with the path of the given request, executes the controller related to that route
 	 * 
 	 * @param Request $request

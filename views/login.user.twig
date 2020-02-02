@@ -1,8 +1,9 @@
 {% extends "layout.twig" %}
 
-{% block title %}Register{% endblock %}
+{% block title %}Login{% endblock %}
 
 {% block content %}
+<h1>Login:</h1>
 
 {% if errors is not empty %}
 
@@ -30,17 +31,12 @@
 }}
 {{ 	
 	Form_group({
-		"label": {"for": "email", "text": "Email"},
-		"field": {"type": "text", "name": "email", "value": post_obj.email}
-	})
-}}
-{{ 	
-	Form_group({
 		"label": {"for": "password", "text": "Password"},
 		"field": {"type": "password", "name": "password", "value": post_obj.password}
 	})
 }}
-{{Form_button("Register", {"class": "button button--ujarak button--border-thin button--text-thick"})}}
+{{Form_button()}}
 
 {{Form_close()}}
+
 {% endblock %}

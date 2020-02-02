@@ -1,10 +1,12 @@
 <?php
 require_once __DIR__ . './vendor/autoload.php';
+require_once __DIR__ . "/functions.php";
 
 use OVS\Core\Config;
 use OVS\Core\Request;
 use OVS\Core\Router;
 use OVS\Utils\DependencyInjector;
+use OVS\Utils\Session;
 
 $config = new Config();
 
@@ -31,6 +33,8 @@ try {
 
 $loader = new \Twig\Loader\FilesystemLoader(__DIR__ . "/views");
 $twig = new \Twig\Environment($loader);
+$twig->addGlobal("session", Session::all());
+
 $twig_functions = $config->get("Twig_Functions");
 
 foreach( $twig_functions as $fn => $method ) {
@@ -43,7 +47,7 @@ foreach( $twig_functions as $fn => $method ) {
  * Dependency Injection starts
  */
 
- $di = new DependencyInjector();
+$di = new DependencyInjector();
 $di->set("PDO", $db);
 $di->set('Twig_Environment', $twig);
 
@@ -53,3 +57,4 @@ $req = new Request();
 $route = new Router($di);
 
 $route->route($req);
+
