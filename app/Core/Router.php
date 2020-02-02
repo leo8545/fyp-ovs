@@ -41,7 +41,7 @@ class Router {
 	 */
 	private static $regex_patters = [
 		"number" => "\d+",
-		"string" => "\w"
+		"string" => "\w+"
 	];
 
 	/**
@@ -76,9 +76,11 @@ class Router {
 	public function route( Request $request ) {
 		
 		$path = $request->get_path();
+		echo $path . "<br>";
+		
 		foreach( $this->route_map as $route => $info ) {
 			$regex_route = $this->get_regex_route( $route, $info );
-
+			echo $regex_route . "<br>";
 			if( preg_match( "@^$regex_route$@", $path ) ) {
 				return $this->execute_controller( $route, $path, $info, $request );
 			}
@@ -122,6 +124,11 @@ class Router {
 	public function execute_controller( string $route, string $path, array $info, Request $request ) {
 		$controller_name = "\OVS\Controllers\\" . $info["controller"] . "Controller";
 		$controller = new $controller_name( $this->di, $request );
+		
+		if(strpos($path, "admin") && !is_user_logged_in() && !is_admin()) {
+			$error_controller = new ErrorController($this->di, $request);
+			return $error_controller->no_access();
+		}
 		
 		$params = $this->extract_params( $route, $path );
 		return call_user_func_array( [$controller, $info["method"]], $params );
