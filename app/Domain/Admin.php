@@ -3,7 +3,7 @@
 namespace OVS\Domain;
 
 class Admin extends User {
-	public function __construct( string $name, string $email, string $password ) {
-		parent::__construct( $name, $email, $password, "admin");
+	public function __construct( string $name, string $email ) {
+		parent::__construct( $name, $email, "admin");
 	}
 }
