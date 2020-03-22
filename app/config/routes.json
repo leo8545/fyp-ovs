@@ -4,7 +4,7 @@
 		"method": "get_home"
 	},
 	"/register": {
-		"controller": "User",
+		"controller": "Customer",
 		"method": "register"
 	},
 	"/login": {
@@ -15,9 +15,84 @@
 		"controller": "User",
 		"method": "logout"
 	},
+	"/admin": {
+		"controller": "Admin",
+		"method": "dashboard"
+	},
+	"/admin/users": {
+		"controller": "UserManager",
+		"method": "get_users",
+		"access": "admin"
+	},
+	"/admin/users/all": {
+		"controller": "UserManager",
+		"method": "get_users",
+		"access": "admin"
+	},
+	"/admin/users/add": {
+		"controller": "UserManager",
+		"method": "add_user",
+		"access": "admin"
+	},
+	"/admin/users/edit/:id": {
+		"controller": "UserManager",
+		"method": "edit_user",
+		"params": {
+			"id": "number"
+		},
+		"access": "admin"
+	},
+	"/admin/users/delete/:id": {
+		"controller": "UserManager",
+		"method": "delete_user",
+		"params": {
+			"id": "number"
+		},
+		"access": "admin"
+	},
+	"/admin/vehicles": {
+		"controller": "VehicleManager",
+		"method": "get_vehicles",
+		"access": "admin"
+	},
+	"/admin/vehicles/all": {
+		"controller": "VehicleManager",
+		"method": "get_vehicles",
+		"access": "admin"
+	},
+	"/admin/vehicles/add": {
+		"controller": "VehicleManager",
+		"method": "add_vehicle",
+		"access": "admin"
+	},
+	"/admin/vehicles/edit/:id": {
+		"controller": "VehicleManager",
+		"method": "edit_vehicle",
+		"params": {
+			"id": "number"
+		},
+		"access": "admin"
+	},
+	"/admin/vehicles/delete/:id": {
+		"controller": "VehicleManager",
+		"method": "delete_vehicle",
+		"params": {
+			"id": "number"
+		},
+		"access": "admin"
+	},
+	"/admin/vehicles/models": {
+		"controller": "VehicleManager",
+		"method": "get_vehicle_models",
+		"access": "admin"
+	},
 	"/admin/dashboard": {
 		"controller": "Admin",
-		"method": "panel"
+		"method": "dashboard"
+	},
+	"/admin/appearance": {
+		"controller": "Admin",
+		"method": "appearance"
 	},
 	"/admin/settings": {
 		"controller": "Admin",
@@ -40,10 +115,5 @@
 		"params": {
 			"id": "number"
 		}
-	},
-	"/dashboard/vehicle/add": {
-		"controller": "Admin",
-		"method": "add_vehicle",
-		"access": "admin"
 	}
 }
