@@ -61,7 +61,6 @@ class Router {
 	 * @param string $to Path to redirect to, without slash
 	 * @access public
 	 */
-
 	static public function redirect(string $to) {
 		header("location: /$to");
 	}
@@ -76,11 +75,18 @@ class Router {
 	public function route( Request $request ) {
 		
 		$path = $request->get_path();
+
+		// $path_s is the path without the query parameters
+		if( strpos($path, "?") !== false ) {
+			$path_s = substr( $path, 0, strpos($path, "?") );
+		} else {
+			$path_s = substr( $path, 0 );
+		}
 		
 		foreach( $this->route_map as $route => $info ) {
 			$regex_route = $this->get_regex_route( $route, $info );
 
-			if( preg_match( "@^$regex_route$@", $path ) ) {
+			if( preg_match( "@^$regex_route$@", $path_s ) ) {
 				return $this->execute_controller( $route, $path, $info, $request );
 			}
 		}
@@ -121,7 +127,7 @@ class Router {
 	 */
 
 	public function execute_controller( string $route, string $path, array $info, Request $request ) {
-		$controller_name = "\OVS\Controllers\\" . $info["controller"] . "Controller";
+		$controller_name = "\OVS\Controllers\\" . (isset($info["access"]) && $info["access"] === "admin" ? "Admin\\" : "") . $info["controller"] . "Controller";
 		$controller = new $controller_name( $this->di, $request );
 		
 		if(strpos($path, "admin") && !is_user_logged_in() && !is_admin()) {
