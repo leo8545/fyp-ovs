@@ -2,3 +2,4 @@ vendor
 uploads/images
 public/assets/css/svgs
 # public/assets/css/fa*
+public/addons/fontawesome
