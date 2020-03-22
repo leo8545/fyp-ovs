@@ -13,6 +13,12 @@
 		"Form_radio": "\\OVS\\Utils\\Form::radio",
 		"Form_label": "\\OVS\\Utils\\Form::label",
 		"Form_group": "\\OVS\\Utils\\Form::group",
-		"Form_button": "\\OVS\\Utils\\Form::button"
+		"Form_button": "\\OVS\\Utils\\Form::button",
+		"Form_select": "\\OVS\\Utils\\Form::select",
+		"Form_textarea": "\\OVS\\Utils\\Form::textarea",
+		"Form_checkbox": "\\OVS\\Utils\\Form::checkbox",
+		"Form_file": "\\OVS\\Utils\\Form::file",
+		"Form_open_field_wrapper": "\\OVS\\Utils\\Form::open_field_wrapper",
+		"Form_close_field_wrapper": "\\OVS\\Utils\\Form::close_field_wrapper"
 	}
 }
