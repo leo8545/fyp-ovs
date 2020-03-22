@@ -5,6 +5,7 @@ require_once __DIR__ . "/functions.php";
 use OVS\Core\Config;
 use OVS\Core\Request;
 use OVS\Core\Router;
+use OVS\Models\AdminModel;
 use OVS\Utils\DependencyInjector;
 use OVS\Utils\Session;
 
@@ -33,8 +34,11 @@ try {
 
 $loader = new \Twig\Loader\FilesystemLoader(__DIR__ . "/views");
 $twig = new \Twig\Environment($loader);
-$twig->addGlobal("siteTitle", "Online Vehicle Showroom");
-$twig->addGlobal("siteShortTitle", "OVS");
+
+$admin_model = new AdminModel($db);
+$options = $admin_model->get_all_options_alt();
+
+$twig->addGlobal("app", $options);
 $twig->addGlobal("session", Session::all());
 
 $twig_functions = $config->get("Twig_Functions");
@@ -55,8 +59,7 @@ $di->set('Twig_Environment', $twig);
 
 // Dependency Injection ends
 
-$req = new Request();
 $route = new Router($di);
+$request = new Request();
 
-$route->route($req);
-
+$route->route($request);
