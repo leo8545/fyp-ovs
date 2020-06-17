@@ -54,6 +54,27 @@ abstract class AbstractModel {
 	}
 
 	/**
+	 * New implementation of get
+	 */
+	public function _get(array $where)
+	{
+		$where_query = "WHERE ";
+		foreach( $where as $col => $val ) {
+			$where_query .= "$col=\"$val\"";
+			if($val !== end($where)) {
+				$where_query .= " && ";
+			}
+		}
+		$query = "SELECT * FROM $this->tableName $where_query";
+		$stmt = $this->db->prepare($query);
+		if(!$stmt->execute()) {
+			throw new DBException("Error getting data from table:$this->tableName");
+		}
+		$result = $stmt->fetchAll($this->db::FETCH_ASSOC);
+		return $result;
+	}
+
+	/**
 	 * Creates a new entry in the database
 	 *
 	 * @param OVS\Domain $object An object of the class in OVS\Domain namespace
@@ -74,9 +95,10 @@ abstract class AbstractModel {
 		$cols = $q->getCommaValues($this->fillable, ["id"], false);
 		$values = $q->getCommaValues($res);
 		$query = "INSERT INTO $this->tableName($cols) VALUES($values)";
+		echo $query;
 		$stmt = $this->db->prepare($query);
 		if( !$stmt->execute() )
-			throw new DBException("Error inserting user to our database");
+			throw new DBException("Error inserting entry to our database");
 		return true;
 	}
 	

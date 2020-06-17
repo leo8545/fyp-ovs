@@ -138,5 +138,17 @@
 		"params": {
 			"id": "number"
 		}
+	},
+	"/add-to-cart": {
+		"controller": "Order",
+		"method": "addToCart"
+	},
+	"/cart": {
+		"controller": "Order",
+		"method": "cart"
+	},
+	"/checkout": {
+		"controller": "Order",
+		"method": "checkout"
 	}
 }

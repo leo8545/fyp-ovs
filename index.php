@@ -6,6 +6,7 @@ use OVS\Core\Config;
 use OVS\Core\Request;
 use OVS\Core\Router;
 use OVS\Models\AdminModel;
+use OVS\Models\OrdersModel;
 use OVS\Utils\DependencyInjector;
 use OVS\Utils\Session;
 

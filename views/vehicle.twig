@@ -37,7 +37,7 @@
 					<td><a href="/dealer/{{dealer|keys|first}}">{{dealer|first}}</a></td>
 				</tr>
 			</table>
-			<form action="/vehicle/{{ vehicle.vehicle_id }}" method="post" class="vehicle_booking_form">
+			<form action="/vehicle/{{ vehicle.vehicle_id }}" method="post" class="vehicle_booking_form" data-vehicle_id="{{vehicle.vehicle_id}}">
 				<div class="form-field">
 					<label for="vehicle_price">Choose number of days to book:</label>
 					<select name="vehicle_price" id="vehicle_price">
@@ -51,7 +51,8 @@
 						<span id="v_price"></span>
 					</div>
 				</div>
-				<input type="submit" class="btn btn-primary book-now-btn" value="Book Now"/>
+				{# <input type="submit" class="btn btn-primary book-now-btn" value="Book Now"/> #}
+				<input type="submit" value="Add to cart" id="btn btn-primary btn-add-to-cart">
 			</form>
 		</div>
 	</div>

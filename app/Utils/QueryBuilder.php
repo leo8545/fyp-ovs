@@ -43,7 +43,7 @@ class QueryBuilder {
 				}
 			}
 			foreach( $result as $c => $v ) {
-				$query .= "$c=$v";
+				$query .= "$c='$v'";
 				if($v !== end($result)) {
 					$query .= ", ";
 				}

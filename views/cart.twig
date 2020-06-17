@@ -1,0 +1,90 @@
+{% extends "layout.twig" %}
+
+{% block title %}Cart{% endblock %}
+
+{% block main_classes %}cart{% endblock %}
+
+{% block page_content_classes %}boxed{% endblock %}
+
+{% block content %}
+<section class="cart">
+	<h2>Cart Details</h2>
+	{% if orders.total_price != 0 %}
+		<table>
+			<tbody>
+				<tr>
+					<th>No.</th>
+					<th>Order id</th>
+					<th>Item name</th>
+					<th>Item price</th>
+					<th>Status</th>
+					<th>Date Added</th>
+				</tr>
+				{% set orderIds = [] %}
+				{% for order in orders.details %}
+					{% set orderIds = orderIds | merge([order.id]) %}
+					<tr>
+						<td>{{loop.index}}</td>
+						<td>{{order.id}}</td>
+						<td>{{order.vehicle.vehicle_model}} by {{order.vehicle.vehicle_manufacturer}}</td>
+						<td>{{order.order_price}}</td>
+						<td>{{order.status}}</td>
+						<td>{{order.booked_at}}</td>
+					</tr>
+				{% endfor %}
+			</tbody>
+		</table>
+		<table>
+			<tr>
+				<td>Cart Totals:</td>
+				<td>{{orders.total_price}} PKR</td>
+			</tr>
+		</table>
+	{% else %}
+
+		<div class="cart-empty">Your cart is empty. First buy something!</div>
+			
+	{% endif %}
+
+</section>
+<section class="checkout">
+	<h2>Checkout</h2>
+	<div>Payment Options</div>
+	<form method="post" class="checkout-form">
+		<div class="payment_options">
+			<label for="pay_opt_card_credit">
+				<input type="radio" name="checkout[payment_option]" id="pay_opt_card_credit" value="credit" class="checkout_payment_options" required>
+				<span>Via credit card</span>
+			</label>
+			<label for="pay_opt_card_debit">
+				<input type="radio" name="checkout[payment_option]" id="pay_opt_card_debit" value="debit" class="checkout_payment_options" required>
+				<span>Via debit card</span>
+			</label>
+			<label for="pay_opt_cod">
+				<input type="radio" name="checkout[payment_option]" id="pay_opt_cod" value="cod" class="checkout_payment_options" required>
+				<span>Cash on delivery</span>
+			</label>
+		</div>
+		<div class="checkout_details" >
+			<div class="card_details" style="display:none">
+				<div class="form-field">
+					<label for="card_number">Card Number:</label>
+					<input type="text" name="checkout[card_number]" id="card_number">
+				</div>
+			</div>
+			<div class="cod_details" style="display:none">
+				<div class="form-field">
+					<label for="cod_address">Street Address:</label>
+					<input type="text" name="checkout[cod_address]" id="cod_address">
+				</div>
+				<div class="form-field">
+					<label for="cod_city">City:</label>
+					<input type="text" name="checkout[cod_city]" id="cod_city">
+				</div>
+			</div>
+		</div>
+		<input type="hidden" name="order_ids" value="{{ orderIds | join(',') }}" id="order_ids">
+		<input type="submit" value="Pay" {% if orders.total_price == 0 %}disabled{% endif %}>
+	</form>
+</section>
+{% endblock %}
