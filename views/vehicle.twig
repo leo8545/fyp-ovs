@@ -1,11 +1,63 @@
 {% extends "layout.twig" %}
 
-{% block title %}  
-Vehicle Page
+{% block title %}
+	{{ vehicle.vehicle_model }}
+{% endblock %}
+
+{% block main_classes %}single_vehicle_page
+{% endblock %}
+
+{% block page_content_classes %}boxed
 {% endblock %}
 
 {% block content %}
-
-<h1>Vehicle Page</h1>
+	{% include "admin/blocks/errors.block.twig" with errors %}
+	<div class="row f2 summary">
+		<div class="col image_wrapper">
+			<img src="{{ vehicle.meta.vehicle_image }}" alt="">
+		</div>
+		<div class="col meta">
+			<table>
+				<tr>
+					<td>Manufacturer</td>
+					<td>{{ vehicle.vehicle_manufacturer }}</td>
+				</tr>
+				<tr>
+					<td>Color</td>
+					<td>{{ vehicle.meta.vehicle_color }}</td>
+				</tr>
+				<tr>
+					<td>Year</td>
+					<td>{{ vehicle.meta.vehicle_year }}</td>
+				</tr>
+				<tr>
+					<td>Transmission</td>
+					<td>{{ vehicle.meta.vehicle_transmission }}</td>
+				</tr>
+			</table>
+			<form action="/vehicle/{{ vehicle.vehicle_id }}" method="post" class="vehicle_booking_form">
+				<div class="form-field">
+					<label for="vehicle_price">Choose number of days to book:</label>
+					<select name="vehicle_price" id="vehicle_price">
+						<option value="{{ vehicle.meta.vehicle_price_week }}">For 1 - 7 days</option>
+						<option value="{{ vehicle.meta.vehicle_price_fortnight }}">For 8 - 15 days</option>
+						<option value="{{ vehicle.meta.vehicle_price_advanced }}">For 15+ days</option>
+					</select>
+				</div>
+				<div class="form-field price">
+					<div>Price (PKR):
+						<span id="v_price"></span>
+					</div>
+				</div>
+				<input type="submit" class="btn btn-primary book-now-btn" value="Book Now"/>
+			</form>
+		</div>
+	</div>
+	<div class="desc">
+		<h3>Description</h3>
+		<div class="description">
+			{{vehicle.meta.description|raw}}
+		</div>
+	</div>
 
 {% endblock %}

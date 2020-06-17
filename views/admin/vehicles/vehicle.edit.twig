@@ -1,0 +1,78 @@
+{% extends "admin/layout.admin.twig" %}
+
+{% block title %}Edit vehicle
+{% endblock %}
+
+{% block pageTitle %}Edit vehicle: {{vehicle.vehicle_number}}{% endblock %}
+{% block content %}
+	{% include "admin/blocks/errors.block.twig" with errors %}
+	{{Form_open("/admin/vehicles/edit/"~vehicle_id, "post", {"enctype":"multipart/form-data"})}}
+		<div class="wrapper">
+			<div class="left">
+				<h3>General</h3>
+				{{Form_group({
+				"label": {"for": "vehicle_number", "text": "Vehicle Number"},
+				"field": {"type": "text", "name": "vehicle_number", "value": vehicle.vehicle_number}
+				})}}
+				{{Form_group({
+				"label": {"for": "vehicle_model", "text": "Vehicle Model"},
+				"field": {"type": "text", "name": "vehicle_model", "value": vehicle.vehicle_model}
+				})}}
+				{{Form_group({
+				"label": {"for": "vehicle_manufacturer", "text": "Vehicle Manufacturer"},
+				"field": {"type": "text", "name": "vehicle_manufacturer", "value": vehicle.vehicle_manufacturer}
+				})}}
+				{{Form_group({
+				"label": {"for": "description", "text": "Description"},
+				"field": {"type": "textarea", "name": "meta[description]", "value": meta.description, "attributes": {"class": "wyswyg"}}
+				})}}
+				{# <h3>Availability</h3>
+				{{Form_group({
+					"label": {"for": "availability", "text": "Available"},
+					"field": {"type": "checkbox", "name": "meta[availability]", "value": meta.availability,"attributes": {"id": "availability", "class": "checkbox-fancy-1"}}
+				})}} #}
+			</div>
+			<div class="right">
+				<h3>Price</h3>
+				{{Form_group({
+				"label": {"for": "vehicle_price_week", "text": "For 1 - 7 Days:"},
+				"field": {"type": "text", "name": "meta[vehicle_price_week]", "value": meta.vehicle_price_week, "attributes":{"placeholder": "in PKR"}}
+				})}}
+				{{Form_group({
+				"label": {"for": "vehicle_price_fortnight", "text": "For 8 - 15 Days:"},
+				"field": {"type": "text", "name": "meta[vehicle_price_fortnight]", "value": meta.vehicle_price_fortnight}
+				})}}
+				{{Form_group({
+				"label": {"for": "vehicle_price_advanced", "text": "For 15+ Days:"},
+				"field": {"type": "text", "name": "meta[vehicle_price_advanced]", "value": meta.vehicle_price_advanced}
+				})}}
+				<h3>General</h3>
+				{{Form_group({
+				"label": {"for": "vehicle_color", "text": "Color:"},
+				"field": {"type": "text", "name": "meta[vehicle_color]", "value": meta.vehicle_color, "attributes":{}}
+				})}}
+				{{Form_group({
+				"label": {"for": "vehicle_year", "text": "Year:"},
+				"field": {"type": "text", "name": "meta[vehicle_year]", "value": meta.vehicle_year, "attributes":{}}
+				})}}
+				<div class="form-field">
+					{{Form_label("vehicle_transmission", "Transmission")}}
+					{{Form_select( "meta[vehicle_transmission]", {"auto": "Automatic", "manual": "Manual"}, meta.vehicle_transmission )}}
+				</div>
+				<div class="image_wrapper">
+					<label for="vehicle_image">Featured Image:</label>
+					<div class="thumbnail">
+					{% if meta.vehicle_image != "" %}
+						{% set src = meta.vehicle_image %}
+					{% else %}
+						{% set src = "/uploads/images/placeholder_car_1.png" %}
+					{% endif %}
+						<img src="{{ src }}" alt="" width="150" />
+					</div>
+					{{Form_file("vehicle_image", src)}}
+				</div>
+			</div>
+		</div>
+		{{Form_button("Update Vehicle")}}
+	{{Form_close()}}
+{% endblock %}

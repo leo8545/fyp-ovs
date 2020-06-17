@@ -1,0 +1,59 @@
+{% extends "admin/layout.admin.twig" %}
+
+{% block title %}Edit user
+{% endblock %}
+
+{% block content %}
+	<h1>Edit user:
+		{{user.username}}</h1>
+	{% if updated %}
+		<div>Successfully updated!</div>
+	{% endif %}
+
+	{% if errors is not empty %}
+
+		<div class="info-box">
+			<ul>
+				{% for key, error in errors %}
+					{% for err in error %}
+						{% if err != 1 %}
+							<li class="{% if key == "success" %}{{key}}{% else %}error{% endif %}">{{err|raw}}</li>
+						{% endif %}
+					{% endfor %}
+				{% endfor %}
+			</ul>
+		</div>
+
+	{% endif %}
+
+
+	{{Form_open("/admin/users/edit/"~user_id)}}
+	<h3>General Information</h3>
+	{{Form_group({
+	"label": {"for": "name", "text": "Username"},
+	"field": {"type": "text", "name": "username", "value": user.username}
+})}}
+	{{Form_group({
+	"label": {"for": "email", "text": "Email"},
+	"field": {"type": "text", "name": "email", "value": user.email}
+})}}
+	{{Form_group({
+	"label": {"for": "password", "text": "Password"},
+	"field": {"type": "text", "name": "password", "value": ""}
+})}}
+	<div class="form-field">
+		{{Form_label("role", "Role")}}
+		{{Form_select( "role", {"admin": "Administrator", "customer": "Customer", "dealer": "Dealer", "employee": "Employee"}, user.role )}}
+	</div>
+	<h3>Additional Information</h3>
+	{{Form_group({
+	"label": {"for": "social_fb", "text": "Facebook Account Link"},
+	"field": {"type": "text", "name": "meta[social_fb]", "value": meta.social_fb}
+})}}
+	{{Form_group({
+	"label": {"for": "social_tw", "text": "Twitter Account Link"},
+	"field": {"type": "text", "name": "meta[social_tw]", "value": meta.social_tw}
+})}}
+	{{Form_button("Update User")}}
+	{{Form_close()}}
+{% endblock %}

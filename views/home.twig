@@ -1,5 +1,42 @@
 {% extends "layout.twig" %}
 
 {% block title %}
-OVS::Online Vehicle Showroom
+	OVS::Online Vehicle Showroom
+{% endblock %}
+
+{% block content %}
+	<div class="container">
+		<section class="slider">
+			<div class="slider-content">
+				<h1>Online Vehicle Showroom</h1>
+				<h4>View and book vehicles of your choice.</h4>
+			</div>
+		</section>
+		<section class="description">
+			<div class="description-content">
+				<div class="column-1">
+					<div class="img">
+						<img src="{{ assets('images/fastcar.png') }}" alt="">
+					</div>
+				</div>
+				<div class="column-2">
+					<h2>Why OVS?</h2>
+					<p>Looking for a perfect rent a car in Pakistan? Want to rent luxury cars in Pakistan? You have come to the right place as Royal Car Rentals enjoys its unique prestige for being one of the leading car rentals of the country.</p>
+					<ul>
+						<li>High-Quality Service</li>
+						<li>Economic</li>
+						<li>Affordable Prices</li>
+						<li>24/7 Customer Care</li>
+					</ul>
+				</div>
+			</div>
+		</section>
+		<section class="vehicles">
+			<ul class="card_wrapper">
+				{% for v in vehicles %}
+					{% include "vehicle.card.twig" with v %}
+				{% endfor %}
+			</ul>
+		</section>
+	</div>
 {% endblock %}

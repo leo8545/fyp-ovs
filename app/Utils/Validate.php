@@ -49,12 +49,13 @@ class Validate {
 	 * Takes associative array of field name as key and rules as values and executes the corresponding validation method
 	 *
 	 * @param array $meta	name => rules
+	 * @param $model Model instance, used for uniqueness validation
 	 */
 	public function __construct( array $meta, $model ) {
 		self::$model = $model;
 		foreach( $meta as $field => $rules ) {
 			$this->field_name = $field;
-			$this->field = (string) $_POST[$field];
+			$this->field = (string) @$_POST[$field];
 			$this->rules = (string) $rules;
 			$this->execute();
 		}
@@ -106,6 +107,15 @@ class Validate {
 				case "unique":
 					$this->set_errors("unique", $this->validate_uniqueness());
 				break;
+				case "image":
+					$this->set_errors("image", $this->validate_image());
+				break;
+				case "maxSize":
+					$this->set_errors("maxSize", $this->validate_file_size($value));
+				break;
+				case "fileType":
+					$this->set_errors("fileType", $this->validate_file_extension($value));
+				break;
 			}
 		}
 	}
@@ -117,15 +127,21 @@ class Validate {
 	 * @access private
 	 */
 	private function validate_uniqueness() {
-		// $user_model = new UserModel($this->db);
-
 		$is_unique = 0;
 		try {
 			$is_unique = self::$model->is_unique_field($this->get_field_name(), $this->get_field());
 		} catch( \Exception $ex ) {
 			return $ex->getMessage();
 		}
-		return $is_unique !== 0 ? 1 : ucfirst($this->get_field_name()) . " already exists.";
+		return ($is_unique !== 0 ? 1 : $this->get_pretty_field_name() . " already exists.");
+	}
+
+	public function get_pretty_field_name() {
+		$name = $this->field_name;
+		if( strpos($name, "_") !== false ) {
+			$name = implode(" ", explode("_", $name));
+		}
+		return "'" . ucfirst($name) . "'";
 	}
 
 	/**
@@ -138,7 +154,7 @@ class Validate {
 	private function validate_max(int $value) {
 		if( strlen($this->field) <= $value )
 			return 1;
-		return ucfirst($this->field_name) . " should be no longer than $value characters.";
+		return $this->get_pretty_field_name() . " should be no longer than $value characters.";
 	}
 
 	/**
@@ -151,7 +167,7 @@ class Validate {
 	private function validate_min(int $value) {
 		if( strlen($this->field) >= $value )
 			return 1;
-		return ucfirst($this->field_name) . " should be atleast $value characters long.";
+		return $this->get_pretty_field_name() . " should be atleast $value characters long.";
 	}
 
 	/**
@@ -163,7 +179,7 @@ class Validate {
 	private function validate_required() {
 		if( !empty($this->field) ) 
 			return 1;
-		return ucfirst($this->field_name) . " is a required field!";
+		return $this->get_pretty_field_name() . " is a required field!";
 	}
 
 	/**
@@ -217,4 +233,37 @@ class Validate {
 		}
 		return 1;
 	}
+
+	private function validate_image() {
+		$file_type = $_FILES[$this->field_name]["type"];
+		if( substr($file_type, 0, strpos($file_type, "/")) === "image" ) {
+			return 1;
+		}
+		return "Uploaded file is not an image!";
+	}
+
+	/**
+	 * Checks whether size of file is lesser than the provided size
+	 *
+	 * @param string $max Maximum size in megabytes as 1M,2M...
+	 * @return mixed 1 if true, error message if false
+	 */
+	private function validate_file_size( string $max ) {
+		$file_size = $_FILES[$this->field_name]["size"];
+		$bytes = ((int) $max) * 1024 * 1024;
+		if( $file_size < $bytes ) {
+			return 1;
+		}
+		return "Size of the image should be lesser than {$max}B";
+	}
+
+	private function validate_file_extension( string $extensions ) {
+		$ext = explode(",", $extensions);
+		$file_extension = pathinfo($_FILES[$this->field_name]["name"], PATHINFO_EXTENSION);
+		if( in_array($file_extension, $ext) ) {
+			return 1;
+		}
+		return "Only these file formats are allowed: <code>$extensions</code>";
+	}
+
 }

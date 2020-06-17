@@ -1,0 +1,24 @@
+{% extends "admin/layout.admin.twig" %}
+
+{% block title %}Add vehicle
+{% endblock %}
+
+{% block content %}
+	<h1>Add New Vehicle</h1>
+	{% include "admin/blocks/errors.block.twig" with errors %}
+	{{Form_open("/admin/vehicles/add")}}
+	{{Form_group({
+	"label": {"for": "vehicle_number", "text": "Vehicle Number"},
+	"field": {"type": "text", "name": "vehicle_number", "value": vehicle.vehicle_number}
+})}}
+	{{Form_group({
+	"label": {"for": "vehicle_model", "text": "Model"},
+	"field": {"type": "text", "name": "vehicle_model", "value": vehicle.vehicle_model}
+})}}
+	{{Form_group({
+	"label": {"for": "vehicle_manufacturer", "text": "Manufacturer"},
+	"field": {"type": "text", "name": "vehicle_manufacturer", "value": vehicle.vehicle_manufacturer}
+})}}
+	{{Form_button("Save Vehicle")}}
+	{{Form_close()}}
+{% endblock %}

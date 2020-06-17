@@ -2,7 +2,15 @@
 
 namespace OVS\Controllers;
 
+use Exception;
 use OVS\Core\Request;
+use OVS\Core\Router;
+use OVS\Domain\Admin\Option;
+use OVS\Domain\User;
+use OVS\Models\AdminModel;
+use OVS\Models\UserModel;
+use OVS\Utils\Session;
+use OVS\Utils\Validate;
 
 class AdminController extends AbstractController {
 	public function add_vehicle() {
@@ -14,7 +22,7 @@ class AdminController extends AbstractController {
 	 *
 	 * @return void
 	 */
-	public function panel() {
+	public function dashboard() {
 		return $this->render("admin/dashboard.twig");
 	}
 
@@ -24,17 +32,35 @@ class AdminController extends AbstractController {
 	 * @param string $option
 	 * @return void
 	 */
-	public function settings($option = "") {
-		$request = new Request();
-		$path = $request->get_path();
+	public function settings($setting_page = "") {
 		$template = "admin/settings";
+		$post_obj = isset($_POST) ? $_POST : "";
+		$admin_model = new AdminModel($this->db);
+		$options = [];
+		if($post_obj) {
+			$options = $post_obj["options"];
+			foreach( $options as $option_name => $option_value ) {
+				$opt = new Option( $option_name, $option_value );
+				$admin_model->set_option($opt);
+			}
+		}
 
-		switch( $option ) {
+		switch( $setting_page ) {
 			case "menu":
 				$template .= ".menu";
 			break;
 		}
 
-		return $this->render("$template.twig");
+		if( empty($options) ) {
+			$options = $admin_model->get_all_options_alt();
+		}
+
+		$props = ["post_obj" => $post_obj, "options" => $options];
+		return $this->render("$template.twig", $props);
 	}
+
+	public function appearance() {
+		return $this->render("admin/settings.menu.twig");
+	}
+
 }

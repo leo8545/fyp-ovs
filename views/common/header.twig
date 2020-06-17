@@ -1,29 +1,37 @@
 <header>
-	<nav class="nav-left">
-		<ul>
-			<li>
-				<a href="/">Home</a>
-			</li>
-			<li>
-				<a href="/vehicle/1">Single Vehicle Page</a>
-			</li>
-		</ul>
-	</nav>
 	<div class="logo">
 		<a href="/">
-			<img src="/../../../public/assets/images/logo.png" alt="Online Vehicle Showroom">
+			<img src="{{assets('images/logo.png')}}" alt="{{app.site_title}}"/>
 		</a>
 	</div>
+
+	<div class="search">
+		<input type="text" id='search' name='search' placeholder='Search by model..' value='' />
+		<div class="search-results"></div>
+	</div>
+	
 	<nav class="nav-right">
 		<ul>
-			<li>
-				<a href="/register">Register</a>
-			</li>
+			{% if session.logged_in_as == "customer" %}
+				<li>
+					<a href="/customer/dashboard">Dashboard</a>
+				</li>
+			{% endif %}
+			{% if session.logged_in_as == "admin" %}
+				<li>
+					<a href="/admin">Admin Panel</a>
+				</li>
+			{% endif %}
+			{% if session.logged_in != "yes" %}
+				<li>
+					<a href="/register">Register</a>
+				</li>
+			{% endif %}
 			<li>
 				{% if session.logged_in %}
-				<a href="/logout">Log out</a>
+					<a href="/logout">Log out</a>
 				{% else %}
-				<a href="/login">Log in</a>
+					<a href="/login">Log in</a>
 				{% endif %}
 			</li>
 		</ul>

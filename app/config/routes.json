@@ -1,7 +1,19 @@
 {
 	"/": {
 		"controller": "Home",
-		"method": "get_home"
+		"method": "index"
+	},
+	"/about": {
+		"controller": "Home",
+		"method": "about"
+	},
+	"/contact": {
+		"controller": "Home",
+		"method": "contact"
+	},
+	"/faqs": {
+		"controller": "Home",
+		"method": "faqs"
 	},
 	"/register": {
 		"controller": "Customer",
@@ -106,14 +118,19 @@
 		}
 	},
 	"/customer/dashboard": {
-		"controller": "User",
-		"method": "go_to_dashboard"
+		"controller": "Customer",
+		"method": "dashboard"
 	},
 	"/vehicle/:id": {
 		"controller": "Vehicle",
-		"method": "get_vehicle",
+		"method": "get",
 		"params": {
 			"id": "number"
 		}
+	},
+	
+	"/vehicle/search": {
+		"controller": "Vehicle",
+		"method": "search"
 	}
 }

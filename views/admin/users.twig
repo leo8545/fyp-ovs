@@ -1,0 +1,71 @@
+{% extends "admin/layout.admin.twig" %}
+
+{% block title %}Users
+{% endblock %}
+
+{% block content %}
+	<div class="admin-page-header">
+		<h1>Users</h1>
+		<a href="/admin/users/add" class="btn btn-primary">Add New</a>
+	</div>
+	{% if GET.delete is not empty %}
+	{# An error dialog after deleting user #}
+		<div class="info-box">
+			<ul>
+				<li class="{% if GET.delete == "success" %}success{% else %}error{% endif %}">{{GET.deletemsg|raw}}</li>
+			</ul>
+		</div>
+	{% endif %}
+	{% if errors is not empty %}
+		<div class="info-box">
+			<ul>
+				{% for key, error in errors %}
+					{% for err in error %}
+						{% if err != 1 %}
+							<li class="{% if key == "success" %}{{key}}{% else %}error{% endif %}">{{err|raw}}</li>
+						{% endif %}
+					{% endfor %}
+				{% endfor %}
+			</ul>
+		</div>
+	{% endif %}
+	<div class="pretable">	
+		<div class="search-filter">
+			{{Form_open("/admin/users")}}
+			{{Form_select( "filter_role", {"all": "Filter by role", "admin": "Administrator", "customer": "Customer", "dealer": "Dealer", "employee": "Employee"}, filter_role )}}
+			{{Form_button("Search")}}
+			{{Form_close()}}
+		</div>
+		<div class="pretable-info">{{users|length}} items</div>
+	</div>
+	<table class="admin-table">
+		<thead>
+			<tr>
+				<th>#</th>
+				<th>Name</th>
+				<th>Email</th>
+				<th>Role</th>
+				<th>Actions</th>
+			</tr>
+		</thead>
+		<tbody>
+			{% for user in users %}
+				<tr>
+					<td>{{loop.index}}</td>
+					<td class="username">{{user.username}}</td>
+					<td>{{user.email}}</td>
+					<td>{{user.role|capitalize}}</td>
+					<td>
+						<a href="/admin/users/edit/{{user.id}}">
+							<i class="far fa-edit" title="Edit user"></i> Edit
+						</a>
+						<a href="/admin/users/delete/{{user.id}}" class="delete-user">
+							<i class="far fa-trash-alt" title="Delete user"></i> Delete
+						</a>
+					</td>
+				</tr>
+			{% endfor %}
+		</tbody>
+	</table>
+
+{% endblock %}

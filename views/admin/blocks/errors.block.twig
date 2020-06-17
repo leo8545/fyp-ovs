@@ -1,0 +1,13 @@
+{% if errors is not empty %}
+	<div class="info-box">
+		<ul>
+			{% for key, error in errors %}
+				{% for err in error %}
+					{% if err != 1 %}
+						<li class="{% if key == "success" %}{{key}}{% else %}error{% endif %}">{{err|raw}}</li>
+					{% endif %}
+				{% endfor %}
+			{% endfor %}
+		</ul>
+	</div>
+{% endif %}

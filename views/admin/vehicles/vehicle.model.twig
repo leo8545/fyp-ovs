@@ -1,0 +1,28 @@
+{% extends "admin/layout.admin.twig" %}
+
+{% block title %}Vehicles
+{% endblock %}
+
+{% block content %}
+	<div class="admin-page-header">
+		<h1>Models</h1>
+		<a href="/admin/vehicles/models/add" class="btn btn-primary">Add New</a>
+	</div>
+	{% include "admin/blocks/errors.block.twig" with errors %}
+	<table class="admin-table">
+		<thead>
+			<tr>
+				<th>#</th>
+				<th>Vehicle Model</th>
+			</tr>
+		</thead>
+		<tbody>
+			{% for model in models %}
+				<tr>
+					<td>{{loop.index}}</td>
+					<td>{{model}}</td>
+				</tr>
+			{% endfor %}
+		</tbody>
+	</table>
+{% endblock %}

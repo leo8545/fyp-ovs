@@ -11,7 +11,6 @@ abstract class AbstractController {
 	protected $di;
 	protected $db;
 	protected $view;
-	public $obj;
 
 	public function __construct(DependencyInjector $di, Request $request) {
 		$this->di = $di;

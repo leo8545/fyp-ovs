@@ -76,16 +76,31 @@ class Router {
 		
 		$path = $request->get_path();
 
-		// $path_s is the path without the query parameters
+		//$path_s is the path without the query parameters
 		if( strpos($path, "?") !== false ) {
 			$path_s = substr( $path, 0, strpos($path, "?") );
 		} else {
 			$path_s = substr( $path, 0 );
 		}
+		// $path_s = $path;
 		
 		foreach( $this->route_map as $route => $info ) {
 			$regex_route = $this->get_regex_route( $route, $info );
 
+			// if(strpos($regex_route, "?") !== false) {
+			// 	$regex_route = str_replace("?", "\?", $regex_route);
+			// 	$q = parse_url($path_s)['query'];
+			// 	parse_str($q, $r);
+			// 	if( strpos($path_s, '%20') !== false ) {
+			// 		$path_s = substr( $path, 0, strpos($path, "?") );
+			// 		$path_s .= '?' . key($r) . '=' . reset($r);
+			// 	}
+			// 	if( strpos($regex_route, "\w+") !== false ) {
+			// 		$regex_route = str_replace("\w+", "[a-zA-Z0-9 ]+", $regex_route);
+			// 	}
+			// }
+
+			// echo "<pre>route: $regex_route path: $path_s</pre><br>";
 			if( preg_match( "@^$regex_route$@", $path_s ) ) {
 				return $this->execute_controller( $route, $path, $info, $request );
 			}
@@ -127,7 +142,7 @@ class Router {
 	 */
 
 	public function execute_controller( string $route, string $path, array $info, Request $request ) {
-		$controller_name = "\OVS\Controllers\\" . (isset($info["access"]) && $info["access"] === "admin" ? "Admin\\" : "") . $info["controller"] . "Controller";
+		$controller_name = "\OVS\Controllers\\" . (isset($info["access"]) && !empty($info["access"]) ? ucfirst($info["access"]) . "\\" : "") . $info["controller"] . "Controller";
 		$controller = new $controller_name( $this->di, $request );
 		
 		if(strpos($path, "admin") && !is_user_logged_in() && !is_admin()) {
@@ -155,6 +170,11 @@ class Router {
 
 		$path_parts = explode( "/", $path );
 		$route_parts = explode( "/", $route );
+
+		if( strpos($route, '?') !== false ) {
+			$route_parts = explode('=', $route);
+			$path_parts = explode('=', $path);
+		}
 
 		foreach( $route_parts as $key => $route_part ) {
 			if( strpos( $route_part, ":" ) === 0 ) {

@@ -1,0 +1,28 @@
+{% extends "admin/layout.admin.twig" %}
+
+{% block title %}Add user
+{% endblock %}
+
+{% block content %}
+	<h1>Add New User</h1>
+	{% include "admin/blocks/errors.block.twig" with errors %}
+	{{Form_open("/admin/users/add")}}
+	{{Form_group({
+	"label": {"for": "name", "text": "Username"},
+	"field": {"type": "text", "name": "username", "value": user.username}
+})}}
+	{{Form_group({
+	"label": {"for": "email", "text": "Email"},
+	"field": {"type": "text", "name": "email", "value": user.email}
+})}}
+	{{Form_group({
+	"label": {"for": "password", "text": "Password"},
+	"field": {"type": "text", "name": "password", "value": ""}
+})}}
+	<div class="form-field">
+		{{Form_label("role", "Role")}}
+		{{Form_select( "role", {"admin": "Administrator", "customer": "Customer", "dealer": "Dealer", "employee": "Employee"} )}}
+	</div>
+	{{Form_button("Save User")}}
+	{{Form_close()}}
+{% endblock %}

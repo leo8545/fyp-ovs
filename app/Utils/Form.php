@@ -19,8 +19,17 @@ class Form {
 
 	static public function input( string $type, string $name, string $value = "", ?array $attributes = [], bool $checked = false ) {
 		$attr_html = Form::get_attributes_html($attributes);
-		$result = "<input type=\"$type\" name=\"$name\" id=\"$name\" value=\"$value\" $attr_html ";
-		if( $type === "radio" ) {
+		if( isset($attributes["id"]) && !empty($attributes["id"]) ) {
+			$id = $attributes["id"];
+		} else {
+			$id = $name;
+		}
+		$result = "<input type=\"$type\" name=\"$name\" id=\"$id\"";
+		if( !empty( $value ) ) {
+			$result .= " value=\"$value\" ";
+		}
+		$result .= " $attr_html ";
+		if( $type === "radio" || $type === "checkbox" ) {
 			$result .= isset($checked) && $checked ? " checked=\"checked\"" : "";
 		}
 		$result .= " />";
@@ -37,7 +46,17 @@ class Form {
 
 	static public function radio(string $name, string $value = "", ?array $attributes = [], bool $checked = false) {
 		return self::input("radio", $name, $value, $attributes, $checked);
-	} 
+	}
+
+	static public function checkbox( string $name, string $value = "", ?array $attributes = [] ) {
+		$checked = checked("yes", $value);
+		$value = empty($value) ? "yes" : $value;
+		return self::input("checkbox", $name, $value, $attributes, $checked);
+	}
+
+	static public function file( string $name, string $value = "", ?array $attributes = [] ) {
+		return self::input("file", $name, $value, $attributes);
+	}
 
 	static public function group(array $meta) {
 
@@ -45,7 +64,7 @@ class Form {
 		
 		if( isset($meta["label"]) && isset($meta["field"]) ) {
 			
-			$res = "<div class=\"form-field\">";
+			$res = self::open_field_wrapper();
 
 			$label_for = isset( $meta["label"]["for"] ) ? $meta["label"]["for"] : "";
 			$label_text = isset( $meta["label"]["text"] ) ? $meta["label"]["text"] : "";
@@ -62,8 +81,18 @@ class Form {
 					$res .= self::$field_type($field_name, $field_value, $attributes);
 				break;
 				case "radio":
-					$res .= self::radio($field_name, $field_value, $attributes, $field_checked);
+					$res .= self::$field_type($field_name, $field_value, $attributes, $field_checked);
 					$res .= self::label($label_for, $label_text);
+				break;
+				case "textarea":
+					$res .= self::label($label_for, $label_text);
+					$res .= self::textarea($field_name, $field_value, $attributes);
+				break;
+				case "checkbox":
+					// $checked = checked("yes", $field_value);
+					// $field_value = empty($field_value) ? "yes" : $field_value;
+					$res .= self::label($label_for, $label_text);
+					$res .= self::checkbox($field_name, $field_value, $attributes );
 				break;
 			}
 			$res .= "</div>";
@@ -77,6 +106,35 @@ class Form {
 		return "<button $attr_html>$text</button>";
 	}
 	
+	static public function select( string $name, array $options, $selected_value = "", ?array $attributes = [] ) {
+		$attr_html = Form::get_attributes_html($attributes);
+		$html = "<select name=\"$name\" id=\"$name\" $attr_html>";
+		$selected = "";
+		foreach( $options as $value => $label ) {
+			if( $value === $selected_value ) {
+				$selected = "selected";
+			} else {
+				$selected = "";
+			}
+			$html .= "<option value=\"$value\" $selected>$label</option>";
+		}
+		$html .= "</select>";
+		return $html;
+	}
+
+	static public function textarea( string $name, string $value, ?array $attributes = []  ) {
+		$attr_html = Form::get_attributes_html($attributes);
+		return "<textarea name=$name $attr_html>$value</textarea>";
+	}
+
+	static public function open_field_wrapper() {
+		return "<div class='form-field'>";
+	}
+
+	static public function close_field_wrapper() {
+		return "</div>";
+	}
+
 	static public function get_attributes_html( array $attributes ) : string {
 		$attr_html = "";
 		foreach($attributes as $attribute_name => $attribute_value) {

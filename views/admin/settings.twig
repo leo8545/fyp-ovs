@@ -6,4 +6,25 @@
 {% block pageTitle %}Settings
 {% endblock %}
 
-{% block content %}{% endblock %}
+{% block content %}
+	{{Form_open("/admin/settings")}}
+	{{Form_group({
+	"label": {"for": "site_title", "text": "Site title"},
+	"field": {"type": "text", "name": "options[site_title]", "value": options.site_title}
+})}}
+	{{Form_group({
+	"label": {"for": "site_alias", "text": "Site Alias"},
+	"field": {"type": "text", "name": "options[site_alias]", "value": options.site_alias}
+})}}
+	{{Form_group({
+	"label": {"for": "author", "text": "Author"},
+	"field": {"type": "text", "name": "options[author]", "value": options.author}
+})}}
+	{{Form_group({
+	"label": {"for": "bone", "text": "bone"},
+	"field": {"type": "text", "name": "options[bone]", "value": options.bone}
+})}}
+
+	{{Form_button("Save Settings")}}
+	{{Form_close()}}
+{% endblock %}

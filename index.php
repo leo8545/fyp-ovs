@@ -33,14 +33,15 @@ try {
  */
 
 $loader = new \Twig\Loader\FilesystemLoader(__DIR__ . "/views");
-$twig = new \Twig\Environment($loader);
+$twig = new \Twig\Environment($loader, ['debug' => true]);
 
 $admin_model = new AdminModel($db);
 $options = $admin_model->get_all_options_alt();
 
 $twig->addGlobal("app", $options);
+$twig->addGlobal("GET", $_GET);
 $twig->addGlobal("session", Session::all());
-
+$twig->addExtension(new \Twig\Extension\DebugExtension());
 $twig_functions = $config->get("Twig_Functions");
 
 foreach( $twig_functions as $fn => $method ) {

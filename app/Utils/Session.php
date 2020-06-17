@@ -16,19 +16,36 @@ class Session {
 		return false;
 	}
 
-	static public function set(string $key, string $value) {
+	static public function set( $key, string $value = "" ) {
 		if( !self::started() ) self::init();
-		if(!isset($_SESSION[$key])) {
-			$_SESSION[$key] = $value;
+
+		if(is_array($key)) {
+			foreach( $key as $session_item_key => $session_item_value ) {
+				if( !isset($_SESSION[$session_item_key]) ) {
+					$_SESSION[$session_item_key] = $session_item_value;
+				}
+			}
+		} else if (is_string($key)) {
+			if(!isset($_SESSION[$key])) {
+				$_SESSION[$key] = $value;
+			}
 		}
 	}
 
-	static public function remove(string $key) {
+	static public function remove( $key ) {
 		if( !self::started() ) self::init();
-		if( isset($_SESSION[$key]) ) {
-			unset($_SESSION[$key]);
+
+		if( is_array($key) ) {
+			foreach( $key as $session_item_key ) {
+				if( isset($_SESSION[$session_item_key]) )
+					unset( $_SESSION[$session_item_key] );
+			}
+			return true;
+		} else if ( is_string($key) && isset( $_SESSION[$key] ) ) {
+			unset( $_SESSION[$key] );
 			return true;
 		}
+
 		return false;
 	}
 

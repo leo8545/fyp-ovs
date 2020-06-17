@@ -1,15 +1,27 @@
 <!DOCTYPE html>
 <html lang="en">
 	<head>
-		<meta charset="UTF-8" />
-		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-		<meta http-equiv="X-UA-Compatible" content="ie=edge" />
-		<link rel="stylesheet" href="/../../public/assets/css/style.min.css" />
-		<title>{% block title %}{% endblock %} - OVS</title>
+		<meta charset="UTF-8"/>
+		<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+		<meta http-equiv="X-UA-Compatible" content="ie=edge"/>
+		<link rel="stylesheet" href="{{assets('css/style.min.css')}}"/>
+		<link rel="stylesheet" href="{{addons('fontawesome/css/all.min.css')}}">
+		<title>
+			{% block title %}{% endblock %}
+			- OVS</title>
 	</head>
 	<body>
 		{% include "common/header.twig" %}
-		<main>{% block content %}{% endblock %}</main>
+		<main class="{% block main_classes %}{% endblock %}"> 
+			{% if show_page_header() == true %}
+				<div class="page_header">
+					<h1>{{ block('title') }}</h1>
+				</div>
+			{% endif %}
+			<div class="page_content {% block page_content_classes %}{% endblock %}">
+				{% block content %}{% endblock %}
+			</div>
+		</main>
 		{% include "common/footer.twig" %}
 	</body>
 </html>

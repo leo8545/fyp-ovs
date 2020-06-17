@@ -2,16 +2,20 @@
 
 {% block title %}Register{% endblock %}
 
+{% block main_classes %}register{% endblock %}
+
+{% block page_content_classes %}boxed{% endblock %}
+
 {% block content %}
 
 {% if errors is not empty %}
 
 <div class="info-box">
 	<ul>
-		{% for error in errors %}
+		{% for key, error in errors %}
 			{% for err in error %}
 				{% if err != 1 %}
-					<li>{{err|raw}}</li>
+					<li class='{% if key != 'success' %}error-{{key}}{% else %}success{% endif %}'>{{err|raw}}</li>
 				{% endif %}
 			{% endfor %}
 		{% endfor %}
@@ -20,7 +24,7 @@
 
 {% endif %}
 
-{{Form_open(path)}}
+{{Form_open("/register", 'post', {'class': 'form register-form'})}}
 
 {{
 	Form_group({
@@ -40,7 +44,7 @@
 		"field": {"type": "password", "name": "password", "value": post_obj.password}
 	})
 }}
-{{Form_button("Register")}}
+{{Form_button("Register", {'class': 'full-width uc'})}}
 
 {{Form_close()}}
 {% endblock %}

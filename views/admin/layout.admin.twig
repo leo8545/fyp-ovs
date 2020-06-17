@@ -5,6 +5,9 @@
 		<meta name="viewport" content="width=device-width, initial-scale=1.0">
 		<meta http-equiv="X-UA-Compatible" content="ie=edge">
 		<link rel="stylesheet" href="/../../public/assets/css/admin.style.min.css">
+		<link rel="stylesheet" href="/../../public/addons/fontawesome/css/all.min.css">
+		<link rel="stylesheet" href="/../../public/addons/trumbowyg/ui/trumbowyg.min.css">
+		<link rel="stylesheet" href="/../../public/addons/sweetalert2/sweetalert2.min.css">
 		<title>
 			{% block title %}{% endblock %}
 		</title>
@@ -15,7 +18,7 @@
 			<aside>{% include "admin/admin.sidebar.twig" %}</aside>
 			<article>
 				<h1 class="admin-page-title">{% block pageTitle %}{% endblock %}</h1>
-				{% block content %}{% endblock %}
+				<div class="admin-page-content">{% block content %}{% endblock %}</div>
 			</article>
 		</main>
 		{% include "admin/admin.footer.twig" %}

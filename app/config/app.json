@@ -6,6 +6,11 @@
 		"dbname": "fyp-ovs-001"
 	},
 	"Twig_Functions": {
+		"url": "url",
+		"home_url": "home_url",
+		"assets": "assets_url",
+		"addons": "addons_url",
+		"show_page_header": "show_page_header",
 		"Form_open": "\\OVS\\Utils\\Form::open",
 		"Form_close": "\\OVS\\Utils\\Form::close",
 		"Form_text": "\\OVS\\Utils\\Form::text",

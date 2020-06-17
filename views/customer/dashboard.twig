@@ -1,9 +1,76 @@
 {% extends "layout.twig" %}
 
-{% block title %}{{username}}'s Dashboard{% endblock %}
+{% block title %}
+	{{session.logged_in_username}}'s Dashboard
+{% endblock %}
+{% block main_classes %}customer-dashboard boxed
+{% endblock %}
 
 {% block content %}
 
-<h1>Hi {{username}}</h1>
+	<h1>Dashboard</h1>
+	<div class="tab_wrapper">
+		<div class="tab-links-wrapper">
+			<div class="tab-link active-tab" id="customer-orders">MyOrders</div>
+			<div class="tab-link" id="customer-settings">My Account</div>
+		</div>
+		<div class="tab-contents-wrapper">
+			<div class="tab-content active-tab" data-section="customer-orders">
+				<h3>My Orders:</h3>
+				<table>
+					<thead>
+						<tr>
+							<th>No.</th>
+							<th>Order number</th>
+							<th>Order Item</th>
+							<th>Order Price</th>
+							<th>Time</th>
+							<th>Actions</th>
+						</tr>
+					</thead>
+					<tbody>
+						{% for order in orders %}
+							<tr>
+								<td>{{ loop.index }}</td>
+								<td>{{ order.id }}</td>
+								<td>
+									<div>
+										<a href="/vehicle/{{order.vehicle.vehicle_id}}">
+											<img src="{{ order.vehicle.meta.vehicle_image }}" alt="" style="width:80px;">
+										</a>
+									</div>
+									<div>
+										<a href="/vehicle/{{order.vehicle.vehicle_id}}">
+											<p>{{ order.vehicle.vehicle_number }}</p>
+											<p>{{ order.vehicle.vehicle_model }}
+												by
+												{{ order.vehicle.vehicle_manufacturer }}</p>
+										</a>
+									</div>
+								</td>
+								<td>{{ order.order_price }}</td>
+								<td>{{ order.booked_at }}</td>
+								<td>
+									<form method="post">
+										<input type="hidden" name="order_id" value="{{ order.id }}"/>
+										<button>&#10008;</button>
+									</form>
+								</td>
+							</tr>
+						{% endfor %}
+					</tbody>
+				</table>
+				{% if orders is empty %}
+					<p>There is no order placed yet. Book some car by
+						<a href="/">clicking here</a>
+					</p>
+				{% endif %}
+			</div>
+			<div class="tab-content" data-section="customer-settings">
+				<h3>Hello,
+					{{session.logged_in_username}}</h3>
+			</div>
+		</div>
+	</div>
 
 {% endblock %}

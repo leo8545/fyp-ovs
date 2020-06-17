@@ -1,0 +1,10 @@
+<li class="card vehicle">
+	<div class="header">
+		<img src="{{ v.meta.vehicle_image }}" alt="{{ v.vehicle_model }}">
+	</div>
+	<div class="body">
+		<div class="title"><span class="model">{{ v.vehicle_model }}</span> <span class="manufacturer">{{ v.vehicle_manufacturer }}</span></div>
+		<div class="price">Price: Rs. {{ v.meta.vehicle_price_week }} <i>to</i> {{ v.meta.vehicle_price_advanced }}</div>
+		<a href="/vehicle/{{v.vehicle_id}}" class="btn book-now">View Detail</a>
+	</div>
+</li>
