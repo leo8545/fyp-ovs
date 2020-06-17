@@ -1,0 +1,50 @@
+{% extends "layout.twig" %}
+
+{% block title %}
+	Dealer :: {{dealer.user.username}}
+{% endblock %}
+
+{% block main_classes %}single_dealer_page{% endblock %}
+
+{% block page_content_classes %}boxed{% endblock %}
+
+{% block content %}
+<div class="container">
+
+	<section class="dealer-info">
+		<h3>About Dealer</h3>
+		<table class="ovs-table dealer-info-table">
+			<tbody>
+				<tr>
+					<td>Username</td>
+					<td>{{dealer.user.username}}</td>
+				</tr>
+				<tr>
+					<td>Contact</td>
+					<td><a href="mailto:{{dealer.user.email}}">{{dealer.user.email}}</a></td>
+				</tr>
+			</tbody>
+		</table>
+	</section>
+	<section class="dealer-vehicles">
+		<h3>{{dealer.user.username}}'s Vehicles</h3>
+		<ul class="dealer-vehicles-list">
+			{% for vehicle in vehicles %}
+				<li class="dealer-vehicle-list-item">
+					<a href="/vehicle/{{vehicle.vehicle_id}}">{{vehicle.vehicle_model}}</a>
+					<table>
+						<tr>
+							<td>Manufacturer:</td>
+							<td>{{vehicle.vehicle_manufacturer}}</td>
+						</tr>
+						<tr>
+							<td>Number:</td>
+							<td>{{vehicle.vehicle_number}}</td>
+						</tr>
+					</table>
+				</li>
+			{% endfor %}
+		</ul>
+	</section>
+</div>
+{% endblock %}

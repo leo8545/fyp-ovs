@@ -3,8 +3,10 @@
 namespace OVS\Controllers\Admin;
 
 use OVS\Controllers\AbstractController;
+use OVS\Controllers\UserController;
 use OVS\Controllers\VehicleController;
 use OVS\Core\Router;
+use OVS\Models\UserModel;
 
 class VehicleManagerController extends AbstractController {
 	public function get_vehicles() {
@@ -90,6 +92,12 @@ class VehicleManagerController extends AbstractController {
 	public function edit_vehicle( int $vehicle_id ) {
 		$vehicle_controller = new VehicleController($this->di, $this->request);
 		$result = $vehicle_controller->edit($vehicle_id);
+		$user_model = new UserModel($this->db);
+		$_dealers = $user_model->get("role", "dealer");
+		$dealers = ["" => "Select one..."];
+		foreach($_dealers as $dealer) {
+			$dealers["dealer-".$dealer['id']] = $dealer['username'];
+		}
 		if( isset($result["errors"]["exception"]["NotFoundException"]) ) {
 			Router::redirect("admin/vehicles");
 		}
@@ -97,6 +105,7 @@ class VehicleManagerController extends AbstractController {
 			"vehicle" => $result["data"],
 			"vehicle_id" => $vehicle_id,
 			"meta" => $result["vehicle_meta"],
+			"dealers" => $dealers,
 			"errors" => $result["errors"]
 		];
 		return $this->render("admin/vehicles/vehicle.edit.twig", $props);

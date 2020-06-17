@@ -1,21 +1,9 @@
 jQuery(document).ready(function($){
-	$('.slider-home').slick({
-		slidesToShow: 1,
-		slidesToScroll: 1,
-		// autoplay: true,
-		autoplaySpeed: 2000,
-	});
 	// Set price on single vehicle page
 	$(".single_vehicle_page #v_price").text($(".single_vehicle_page #vehicle_price").val())
 	$(".single_vehicle_page #vehicle_price").on("change", function() {
 		$(".single_vehicle_page #v_price").text($(this).val())
 	})
-	// new Glide('.glide', {
-	// 	gap: 0,
-	// 	// perView: 3,
-	// 	// autoplay: 2000
-
-	// }).mount();
 
 	/**
 	 * Tabs
@@ -36,6 +24,7 @@ jQuery(document).ready(function($){
 	// Header search bar
 	let res = '';
 	$('#search').on('keyup', e => {
+		console.log("clickd");
 		res = $('#search').val();
 		if( res.length >= 3 ) {
 			$('.search-results').show();
@@ -68,26 +57,4 @@ jQuery(document).ready(function($){
 			$('.search-results').hide();
 		}
 	})
-
-	// Wrap every letter in a span
-var textWrapper = document.querySelector('.ml3');
-textWrapper.innerHTML = textWrapper.textContent.replace(/\S/g, "<span class='letter'>$&</span>");
-
-anime.timeline({loop: true})
-  .add({
-    targets: '.ml3 .letter',
-    opacity: [0,1],
-    easing: "easeInOutQuad",
-    duration: 2250,
-    delay: (el, i) => 150 * (i+1)
-  }).add({
-    targets: '.ml3',
-    opacity: 0,
-    duration: 1000,
-    // easing: "easeOutExpo",
-    delay: 1000
-  });
-
-
-
 });

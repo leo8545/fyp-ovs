@@ -11,6 +11,8 @@ use PDO;
 class VehicleModel extends AbstractModel {
 
 	const CLASSNAME = "\OVS\Domain\Vehicle";
+	protected $primaryKey = "vehicle_id";
+	protected $tableName = "vehicles";
 
 	/**
 	 * Retrieves vehicles and number of pages
@@ -82,6 +84,7 @@ SQL;
 	}
 
 	public function get_vehicle_by(string $field, string $value, bool $single = true) {
+		$table_name = "vehicles";
 		$col_name = "";
 		switch( $field ) {
 			case "id":
@@ -97,8 +100,18 @@ SQL;
 			case "manufacturer":
 				$col_name = "vehicle_manufacturer";
 			break;
+			case "meta.vehicle_dealer":
+				$table_name = "vehicle_meta";
+				$meta_key = "vehicle_dealer";
+			break;
 		}
-		$query = "SELECT * FROM vehicles WHERE $col_name = :value";
+		if( $table_name !== "vehicles" ) {
+			$query = <<< 'SQL'
+			SELECT * from vehicle_meta WHERE meta_key="vehicle_dealer" && meta_value=:value 
+SQL;
+		} else {
+			$query = "SELECT * FROM vehicles WHERE $col_name = :value";
+		}
 		$stmt = $this->db->prepare($query);
 		$stmt->bindValue("value", $value);
 		if(!$stmt->execute()) {

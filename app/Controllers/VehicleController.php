@@ -33,9 +33,19 @@ class VehicleController extends AbstractController {
 		}
 		$vehicle_model = new VehicleModel($this->db);
 		$meta = $vehicle_model->get_vehicle_meta($vehicle_id);
+		$user_model = new UserModel($this->db);
+		$dealer = [];
+		if(@$meta['vehicle_dealer']) {
+			$_dealer = $user_model->get("id", explode("-", $meta['vehicle_dealer'])[1]);
+			$dealer[$_dealer[0]['id']] = $_dealer[0]['username'];
+		}
 		$res = $vehicle;
 		$res["meta"] = $meta;
-		return $this->render( "vehicle.twig", ["vehicle" => $res, "errors" => $errors] );
+		return $this->render( "vehicle.twig", [
+			"vehicle" => $res, 
+			"dealer" => $dealer,
+			"errors" => $errors
+		] );
 	}
 
 	public function get_vehicles() {

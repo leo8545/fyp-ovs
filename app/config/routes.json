@@ -128,9 +128,15 @@
 			"id": "number"
 		}
 	},
-	
 	"/vehicle/search": {
 		"controller": "Vehicle",
 		"method": "search"
+	},
+	"/dealer/:id": {
+		"controller": "Dealer",
+		"method": "index",
+		"params": {
+			"id": "number"
+		}
 	}
 }
