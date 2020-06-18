@@ -117,6 +117,24 @@
 			"opt": "string"
 		}
 	},
+	"/admin/orders": {
+		"controller": "Admin",
+		"method": "manage_orders"
+	},
+	"/admin/orders/edit/:id": {
+		"controller": "Admin",
+		"method": "edit_order",
+		"params": {
+			"id": "number"
+		}
+	},
+	"/admin/orders/delete/:id": {
+		"controller": "Admin",
+		"method": "delete_order",
+		"params": {
+			"id": "number"
+		}
+	},
 	"/customer/dashboard": {
 		"controller": "Customer",
 		"method": "dashboard"

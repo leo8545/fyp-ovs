@@ -82,6 +82,16 @@ jQuery(document).ready(function ($) {
 			url: "/add-to-cart",
 			method: "post",
 			success: (_response) => {
+				response = JSON.parse(_response);
+				if(response.success) {
+					$("#notify").removeClass("error");
+					$("#notify").addClass("success");
+					$("#notify").text(response.success);
+				} else {
+					$("#notify").removeClass("success")
+					$("#notify").addClass("error")
+					$("#notify").text(response.error);
+				}
 				console.log(_response);
 			},
 		});
@@ -139,8 +149,18 @@ jQuery(document).ready(function ($) {
 			method: "post",
 			url: "/checkout",
 			success: (_response) => {
+				$(".checkout-notify").show();
+				$(".checkout-notify").addClass("success");
+				$(".checkout-notify").text("Order is completed. Thank you!");
 				console.log(_response);
 			},
 		});
 	});
+	$(".register-form").submit( e => {
+		e.preventDefault();
+		var cnic = $("#cnic").length;
+		if(cnic !== 13) {
+			alert("CNIC should be equal to 13 digits")
+		}
+	})
 });

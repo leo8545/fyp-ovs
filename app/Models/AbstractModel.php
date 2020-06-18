@@ -95,7 +95,6 @@ abstract class AbstractModel {
 		$cols = $q->getCommaValues($this->fillable, ["id"], false);
 		$values = $q->getCommaValues($res);
 		$query = "INSERT INTO $this->tableName($cols) VALUES($values)";
-		echo $query;
 		$stmt = $this->db->prepare($query);
 		if( !$stmt->execute() )
 			throw new DBException("Error inserting entry to our database");

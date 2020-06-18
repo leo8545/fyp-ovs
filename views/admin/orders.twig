@@ -1,0 +1,38 @@
+{% extends "admin/layout.admin.twig" %}
+
+{% block title %}Orders{% endblock %}
+
+{% block content %}
+	<div class="admin-page-header">
+		<h1>Orders</h1>
+	</div>
+	<table class="admin-table">
+		<thead>
+			<tr>
+				<th>#</th>
+				<th>Order id</th>
+				<th>Item name</th>
+				<th>Status</th>
+				<th>Price (PKR)</th>
+				<th>Date added</th>
+				<th>Actions</th>
+			</tr>
+		</thead>
+		<tbody>
+			{% for order in orders %}
+				<tr>
+					<td>{{loop.index}}</td>
+					<td class="order_id">{{order.id}}</td>
+					<td>{{order.vehicle.vehicle_model}} by {{order.vehicle.vehicle_manufacturer}} ({{order.vehicle.vehicle_number}})</td>
+					<td>{{order.status}}</td>
+					<td>{{order.order_price}}</td>
+					<td>{{order.booked_at}}</td>
+					<td>
+						<a href="/admin/orders/edit/{{order.id}}" class="edit-order"><i class="far fa-edit" title="Edit order"></i>Edit</a>
+						<a href="/admin/orders/delete/{{order.id}}" class="delete-order"><i class="far fa-trash-alt" title="Delete order"></i>Delete</a>
+					</td>
+				</tr>
+			{% endfor %}
+		</tbody>
+	</table>
+{% endblock %}

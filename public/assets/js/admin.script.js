@@ -25,12 +25,12 @@ document.querySelectorAll("aside ul > li.menu-item").forEach(li => {
  * Confirmation box for deleting user
  */
 const deleteUserBtns = document.querySelectorAll(
-	".delete-user, .delete-vehicle"
+	".delete-user, .delete-vehicle, .delete-order"
 );
 deleteUserBtns.forEach((v, i) => {
 	v.addEventListener("click", e => {
 		e.preventDefault();
-		const username = v.closest("tr").querySelector(".username, .vehicle_name").textContent;
+		const username = v.closest("tr").querySelector(".username, .vehicle_name, .order_id").textContent;
 		Swal.fire({
 			title: `Are you sure to delete ${username}?`,
 			text: "You won't be able to revert this!",

@@ -1,0 +1,42 @@
+{% extends "admin/layout.admin.twig" %}
+
+{% block title %}Orders{% endblock %}
+
+{% block content %}
+	<h1>Edit Order: {{order.id}}</h1>
+	{% if isUpdated == true %}
+		<div>Successfully updated!</div>
+	{% endif %}
+	{{Form_open("/admin/orders/edit/"~order.id)}}
+
+	<div class="form-field">
+		<label for="booked_by">Booked by</label>
+		<p>{{order.booked_by}}</p>
+	</div>
+	<div class="form-field">
+		<label for="order_price">Price</label>
+		<p>{{order.order_price}} PKR</p>
+	</div>
+	<div class="form-field">
+		<label for="order_item">Order Item</label>
+		<p>{{order.vehicle.vehicle_model}} by {{order.vehicle.vehicle_manufacturer}} ({{order.vehicle.vehicle_number}}) <a href="/admin/vehicles/edit/{{order.vehicle_id}}">Go to vehicle</a></p>
+	</div>
+	<div class="form-field">
+		<label for="order_status">Order status</label>
+		<select name="order_status" id="order_status">
+			<option value="pending" {% if order.status == "pending" %}selected{% endif %}>Pending</option>
+			<option value="paid" {% if order.status == "paid" %}selected{% endif %}>Paid</option>
+		</select>
+	</div>
+	{% if order.payment is not empty %}
+	<h3>Payment Details</h3>
+		{% for k, pd in order.payment %}
+			<div class="form-field">
+				<label>{{k}}</label>
+				<p>{{pd}}</p>
+			</div>
+		{% endfor %}
+	{% endif %}
+	{{Form_button("Update")}}
+	{{Form_close()}}
+{% endblock %}

@@ -15,6 +15,7 @@ class OrderController extends AbstractController
 		$vehicle_id = (int) $_POST['vehicle_id'];
 		$vehicle_model = new VehicleModel($this->db);
 		$result = [];
+		$isCreated = false;
 		try {
 			$vehicle = $vehicle_model->get_vehicle_by("id", $vehicle_id);
 			$order_model = new OrdersModel($this->db);
@@ -22,11 +23,13 @@ class OrderController extends AbstractController
 				$result = ['error' => 'This vehicle already been booked by you!'];
 			} else {
 				// Add entry to orders table with status pending
-				$this->createOrder($_POST);
-
+				$isCreated = $this->createOrder($_POST);
 			}
 		} catch(\Exception $ex) {
 			$result = ['error' => $ex->getMessage()];
+		}
+		if($isCreated) {
+			$result['success'] = 'Item added to cart successfully!';
 		}
 		echo json_encode($result);
 	}
@@ -66,9 +69,6 @@ class OrderController extends AbstractController
 			$totalPrice += (int) $order['order_price'];
 		}
 		$orders['total_price'] = $totalPrice;
-		echo '<pre>';
-		print_r($orders);
-		echo '</pre>';
 		return $this->render("cart.twig", ["orders" => $orders]);
 	}
 

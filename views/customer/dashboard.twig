@@ -25,7 +25,8 @@
 							<th>Order Item</th>
 							<th>Order Price</th>
 							<th>Time</th>
-							<th>Actions</th>
+							<th>Status</th>
+							{# <th>Actions</th> #}
 						</tr>
 					</thead>
 					<tbody>
@@ -51,10 +52,11 @@
 								<td>{{ order.order_price }}</td>
 								<td>{{ order.booked_at }}</td>
 								<td>
-									<form method="post">
+									{# <form method="post">
 										<input type="hidden" name="order_id" value="{{ order.id }}"/>
 										<button>&#10008;</button>
-									</form>
+									</form> #}
+									{{order.status}}
 								</td>
 							</tr>
 						{% endfor %}

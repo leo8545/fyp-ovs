@@ -10,7 +10,7 @@
 <section class="cart">
 	<h2>Cart Details</h2>
 	{% if orders.total_price != 0 %}
-		<table>
+		<table class="cart-items">
 			<tbody>
 				<tr>
 					<th>No.</th>
@@ -26,7 +26,7 @@
 					<tr>
 						<td>{{loop.index}}</td>
 						<td>{{order.id}}</td>
-						<td>{{order.vehicle.vehicle_model}} by {{order.vehicle.vehicle_manufacturer}}</td>
+						<td><a href="/vehicle/{{order.vehicle.vehicle_id}}">{{order.vehicle.vehicle_model}} by {{order.vehicle.vehicle_manufacturer}}</a></td>
 						<td>{{order.order_price}}</td>
 						<td>{{order.status}}</td>
 						<td>{{order.booked_at}}</td>
@@ -34,7 +34,7 @@
 				{% endfor %}
 			</tbody>
 		</table>
-		<table>
+		<table class="cart-summary">
 			<tr>
 				<td>Cart Totals:</td>
 				<td>{{orders.total_price}} PKR</td>
@@ -84,7 +84,8 @@
 			</div>
 		</div>
 		<input type="hidden" name="order_ids" value="{{ orderIds | join(',') }}" id="order_ids">
-		<input type="submit" value="Pay" {% if orders.total_price == 0 %}disabled{% endif %}>
+		<input type="submit" value="Pay" class="btn btn-primary btn-checkout-btn-pay" {% if orders.total_price == 0 %}disabled{% endif %}>
 	</form>
+	<div class="checkout-notify" style="display:none"></div>
 </section>
 {% endblock %}
